@@ -1,0 +1,121 @@
+<mvc:View
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:forms="sap.ui.layout.form"
+		xmlns="sap.m">
+
+	<forms:Form width="100%">
+
+		<forms:formContainers>
+
+			<forms:FormContainer id="addressInfo" title="">
+				<forms:formElements>
+
+					<forms:FormElement label="{i18n>Pedido}">
+						<forms:fields>
+							<Text text="{objectView>/ebeln}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+					<forms:FormElement label="{i18n>Pos}">
+						<forms:fields>
+							<Text text="{objectView>/ebelp}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+				</forms:formElements>
+			</forms:FormContainer>
+
+
+			<forms:FormContainer id="socialInfo" title="">
+				<forms:formElements>
+
+					<forms:FormElement label="{i18n>NroMat}">
+						<forms:fields>
+							<Text text="{objectView>/Matnr}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+					<forms:FormElement label="{i18n>DescMat}">
+						<forms:fields>
+							<Text text="{objectView>/txz01}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+				</forms:formElements>
+			</forms:FormContainer>
+
+
+			<forms:FormContainer  title="">
+				<forms:formElements>
+					
+					<forms:FormElement label="{i18n>Quantity}">
+						<forms:fields>
+							<Text text="{objectView>/menge}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+					<forms:FormElement label="{i18n>valNeto}">
+						<forms:fields>
+							<Text text="{path:'objectView>/netwr', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
+						</forms:fields>
+					</forms:FormElement>
+				</forms:formElements>
+			</forms:FormContainer>
+
+			<forms:FormContainer  title="">
+				<forms:formElements>
+					<forms:FormElement label="{i18n>nroServ}">
+						<forms:fields>
+							<Text text="{objectView>/to_servicio/srvpos}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+					<forms:FormElement label="{i18n>Paquete}">
+						<forms:fields>
+							<Text text="{objectView>/to_servicio/sub_packno}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+				</forms:formElements>
+			</forms:FormContainer>
+		
+			<forms:FormContainer  title="">
+				<forms:formElements>
+
+					<forms:FormElement label="{i18n>Unidad}">
+						<forms:fields>
+							<Text text="{objectView>/meins}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+					<forms:FormElement label="{i18n>linea}">
+						<forms:fields>
+							<Text text="{objectView>/to_servicio/extrow}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+				</forms:formElements>
+			</forms:FormContainer>
+
+			<forms:FormContainer  title="">
+				<forms:formElements>
+
+					<forms:FormElement label="{i18n>Moneda}">
+						<forms:fields>
+							<Text text="{objectView>/to_servicio/waers}"/>
+						</forms:fields>
+					</forms:FormElement>
+
+				</forms:formElements>
+			</forms:FormContainer>
+
+
+		</forms:formContainers>
+
+
+		<forms:formContainers>
+			
+		</forms:formContainers>
+	</forms:Form>
+
+</mvc:View>

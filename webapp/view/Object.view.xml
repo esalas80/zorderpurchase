@@ -1,0 +1,111 @@
+<mvc:View
+    controllerName="gm.zorderpurchase.controller.Object"
+    xmlns:m="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:t="sap.ui.table"
+    xmlns:u="sap.ui.unified"
+    xmlns:semantic="sap.f.semantic"
+	xmlns:form="sap.ui.layout.form" 
+	xmlns:layout="sap.ui.layout"
+	xmlns:personal="gm.zorderpurchase.controller.blocks"
+	xmlns:employment="gm.zorderpurchase.controller.blocks"
+	xmlns:completetext="gm.zorderpurchase.controller.blocks"
+	xmlns:paymetcond="gm.zorderpurchase.controller.blocks"
+	 xmlns="sap.uxap">
+     <ObjectPageLayout
+        showTitleInHeaderContent="true"
+		useIconTabBar="true"
+		upperCaseAnchorBar="false">
+        <headerTitle>
+            	<ObjectPageDynamicHeaderTitle>
+                    <expandedHeading>
+                        <m:Title id="pageTitle" text="{i18n>expandTitle}" wrapping="true"/>
+                    </expandedHeading>
+                    <snappedHeading>
+                        <m:FlexBox fitContainer="true" alignItems="Center">
+                            <!-- <m:Avatar src="./test-resources/sap/uxap/images/imageID_275314.png" class="sapUiTinyMarginEnd"/>
+                            <m:Title text="Denise Smith" wrapping="true" /> -->
+                             <m:Title id="snappedTitle" text="{i18n>expandTitle}" wrapping="true"/>
+                        </m:FlexBox>
+                    </snappedHeading>
+                </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+        <headerContent>
+			
+				<layout:BlockLayout background="Mixed" visible="true">
+					<layout:BlockLayoutRow scrollable="false">
+					
+						<layout:BlockLayoutCell  >
+							<m:ObjectHeader
+                                    binding="{orderModel>/}"
+                                    title="{objectView>/to_servicio/ktext1}"
+                                    titleActive="true"
+                                    number="{
+                                        parts:[{path:'objectView>/to_servicio/tbtwr'},{path:'objectView>objectView>/to_servicio/waers'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                    }"
+                                    numberUnit="{objectView>/to_servicio/waers}"
+                                     class="sapUiResponsivePadding--header" >
+                                   
+                                </m:ObjectHeader>
+							
+							<m:FlexBox wrap="Wrap" fitContainer="true" >
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									<m:Label text="{i18n>FecEnt}" />
+									<m:VBox>
+										<m:Label text="{path : 'objectView>/eindt', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
+									</m:VBox>
+								</layout:VerticalLayout>
+								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
+									
+								</layout:VerticalLayout>
+							</m:FlexBox>
+						</layout:BlockLayoutCell> 
+					</layout:BlockLayoutRow>
+				</layout:BlockLayout>
+			
+		</headerContent>
+		<sections>
+			<ObjectPageSection titleUppercase="false" title="General">
+				<subSections>
+					<ObjectPageSubSection titleUppercase="false">
+						<blocks>
+							<personal:PersonalFormBlock id="generallinfo" columnLayout="3"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+			<ObjectPageSection titleUppercase="false" title="Texto Completo">
+				<subSections>
+					<ObjectPageSubSection title="Texto Completo" titleUppercase="false">
+						<blocks>
+							<completetext:BlockCompleteText id="completeText" columnLayout="3"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+			<ObjectPageSection titleUppercase="false" title="Condiciones de Pago">
+				<subSections>
+					<ObjectPageSubSection title="Condiciones de Pago" titleUppercase="false">
+						<blocks>
+							<paymetcond:BlockPaymentCondition id="payCondition" columnLayout="3"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+			<ObjectPageSection titleUppercase="false" title="Employment">
+				<subSections>
+					<ObjectPageSubSection title="Direccion de Entrega" titleUppercase="false">
+						<blocks>
+							<employment:BlockJobInfo id="dirinfo" columnLayout="3"/>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+     </ObjectPageLayout>
+</mvc:View>

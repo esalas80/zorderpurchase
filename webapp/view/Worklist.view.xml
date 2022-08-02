@@ -1,0 +1,256 @@
+<mvc:View
+    controllerName="gm.zorderpurchase.controller.Worklist"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.m.semantic"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form">
+    <SplitContainer>
+        <masterPages>
+            <semantic:MasterPage title="{i18n>appTitle}">
+				<semantic:landmarkInfo>
+					<PageAccessibleLandmarkInfo rootLabel="Root label" headerLabel="Header label" footerLabel="Footer label"></PageAccessibleLandmarkInfo>
+				</semantic:landmarkInfo>
+				<semantic:content>
+                    <List
+                        id="list"
+                        width="auto"
+                        class="sapFDynamicPageAlignContent"
+                        mode="SingleSelectMaster"
+                        items="{
+                            path: 'ListModel>/',
+                            sorter: { path: 'ebeln', descending: true},
+                            groupHeaderFactory: '.createGroupHeader'
+                        }"
+                        headerText="{worklistView>/title}"
+                        busyIndicatorDelay="{listView>/delay}"
+                        noDataText="{listView>/noDataText}"
+                        growing="true"
+                        growingScrollToLoad="true"
+                        updateFinished=".onUpdateFinished"
+                        selectionChange=".onSelectionChange">
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <SearchField
+                                    id="searchField"
+                                    tooltip="{i18n>listSearchTooltip}"
+                                    search=".onSearch"
+                                    width="auto">
+                                    <layoutData>
+                                        <OverflowToolbarLayoutData
+                                            minWidth="150px"
+                                            maxWidth="240px"
+                                            shrinkable="true"
+                                            priority="NeverOverflow"/>
+                                    </layoutData>
+                                </SearchField>
+                                <ToolbarSpacer/>
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <ObjectListItem
+                            title="{ListModel>name1}"
+                            type="Active"
+                            press=".onSelectionChange"
+                            number="{
+                                parts:[{path:'ListModel>Importe'},{path:'ListModel>Waers'}],
+                                type: 'sap.ui.model.type.Currency',
+                                formatOptions: {showMeasure: false}
+                            }"
+                            numberUnit="{ListModel>Waers}">
+                            <attributes>
+                                <ObjectAttribute text="{ListModel>ebeln}" />
+                                <ObjectAttribute text="{path : 'ListModel>bedat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+                                <ObjectAttribute text="Items: {ListModel>Items}" />
+                            </attributes>
+                        </ObjectListItem>
+                    </List>
+                                
+                </semantic:content>
+			</semantic:MasterPage>
+        </masterPages>
+        <detailPages>
+			<semantic:DetailPage title="{i18n>TitleDetail}">
+              
+                <semantic:content>
+                    <l:BlockLayout background="Mixed" >
+                        <l:BlockLayoutRow scrollable="false">
+                            <l:BlockLayoutCell   backgroundColorSet="ColorSet6" backgroundColorShade="ShadeE" >
+                               <ObjectHeader
+                                    binding="{orderModel>/}"
+                                    title="Proveedor: {orderModel>name1}"
+                                    titleActive="true"
+                                    number="{
+                                        parts:[{path:'orderModel>Importe'},{path:'orderModel>Waers'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                    }"
+                                    numberUnit="{orderModel>Waers}"
+                                    class="sapUiResponsivePadding--header" >
+                                    <!-- <ObjectAttribute active="true" text="{orderModel>/NameF}" /> -->
+                                    <ObjectAttribute title="Núm. Pedido" text="{orderModel>/ebeln}" />
+                                    <ObjectAttribute title="Núm. Proveedor" text="{orderModel>/lifnr}" />
+                                    <ObjectAttribute title="Facturar a" text="{orderModel>/}" />
+                                    <ObjectAttribute title="Fecha Pedido" text="{path : 'orderModel>/bedat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+                                    <ObjectAttribute title="Fecha Entrega" text="{path : 'orderModel>/', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+                                    
+                                    <ObjectAttribute title="Usuario SAP" text="{orderModel>/ernam}" />
+                                    <ObjectAttribute title="Tipo Documento" text="{orderModel>/bsart}" />
+                                    <ObjectAttribute title="Org. Compras" text="{orderModel>/ekorg}" />
+                                    <ObjectAttribute title="Gpo. Compras" text="{orderModel>/ekgrp}" />
+                                    <ObjectAttribute title="Denom. G. Compras" text="{orderModel>/eknam}" />
+                                    
+                                   
+                                </ObjectHeader>
+                            </l:BlockLayoutCell>
+                        </l:BlockLayoutRow>
+                    </l:BlockLayout>
+                    <l:VerticalLayout width="100%">
+                        <IconTabBar
+                            id="iconTabBar"
+                            headerBackgroundDesign="Transparent"
+                            select=".onTabSelect"
+                            selectedKey="{detailView>/selectedTab}">
+                            <items>
+                                <IconTabFilter
+                                    id="iconTabFilterShipping"
+                                    icon="sap-icon://message-information"
+                                    tooltip="{i18n>detailIconTabBarInfo}"
+                                    key="Items">
+                                    <content>
+                                        <Table
+                                            id="lineItemsList"
+                                            class="sapUiSmallMarginTop"
+                                            width="auto"
+                                            mode="SingleSelectMaster"
+                                            selectionChange="handleSelectionChange"
+                                            items="{path: 'ListdetailModel>/'}"
+                                            noDataText="{i18n>noDataRequest}"
+                                            busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+                                            <headerToolbar>
+                                                <Toolbar id="lineItemsToolbar">
+                                                    <Title
+                                                        id="lineItemsHeader"
+                                                        text="Items"/>
+                                                </Toolbar>
+                                            </headerToolbar>
+                                            <columns>
+                                                 <Column>
+                                                    <Text text="{i18n>Pos}"/>
+                                                </Column>
+                                                <Column >
+                                                    <Text text="{i18n>NoMat}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>DescMat}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>Quantity}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>Imp}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>SubTot}"/>
+                                                </Column>
+                                                <Column>
+                                                    <Text text="{i18n>FecEnt}"/>
+                                                </Column>
+                                               
+                                            </columns>
+                                            <items>
+                                                <ColumnListItem  type="Navigation" press=".onPress">
+                                                    <cells>
+                                                        <ObjectAttribute
+                                                             text="{ListdetailModel>ebelp}"/>
+                                                        <ObjectIdentifier
+                                                           text="{ListdetailModel>matnr}"/>  
+                                                        <ObjectIdentifier
+                                                            text="{ListdetailModel>txz01}"/>   
+                                                        <ObjectNumber
+                                                            number="{
+                                                                path: 'ListdetailModel>menge'
+                                                            }"
+                                                            unit="{ListdetailModel>meins}"/>
+                                                        <ObjectNumber
+                                                            number="{
+                                                                parts:[{path:'ListdetailModel>netwr'},{path:'ListdetailModel>waers'}],
+                                                                type: 'sap.ui.model.type.Currency',
+                                                                formatOptions: {showMeasure: false}
+                                                            }"
+                                                            unit="{ListdetailModel>waers}"/>    
+                                                        <ObjectAttribute
+                                                            text="$ {path:'ListdetailModel>netwr', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
+                                                        <ObjectIdentifier
+                                                            text="{path : 'ListdetailModel>eindt', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }"/>
+                                                    </cells>
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>
+                                    </content>
+                                </IconTabFilter>
+                                <IconTabFilter
+                                    id="iconTabFilterAttach"
+                                    icon="sap-icon://attachment"
+                                    tooltip="{i18n>detailIconTabBarAttachments}"
+                                    key="attach">
+                                    <content >
+                                        <List
+                                            id="ShortAttachments"
+                                            headerText="Adjuntos"
+                                            items="{path: 'ListAttachModel>/'}"
+                                            noDataText="{i18n>noDataRequest}">
+                                            <items>
+                                                <StandardListItem 	
+                                                    title="{ListAttachModel>Ebeln}"
+                                                    description="{ListAttachModel>ObjType}"
+                                                    icon="{ListAttachModel>Icon}"
+                                                    iconDensityAware="false"
+                                                    iconInset="false"
+                                                    type="Navigation"
+                                                    press="handleSelectionAttach"/>
+                                            </items>
+                                        </List>
+                                    </content>
+                                </IconTabFilter>
+                                <IconTabFilter
+                                    id="iconTabFilterOrderPurchase"
+                                    icon="sap-icon://sales-quote"
+                                    tooltip="{i18n>detailIconTabBarOrder}"
+                                    key="order">
+                                    <content >
+                                        <List
+                                            id="ShorDocument"
+                                            headerText="Previsualización de Orden"
+                                            items="{path: 'ListOrderModel>/'}"
+                                            noDataText="{i18n>noDataRequest}">
+                                            <items>
+                                                <StandardListItem 	
+                                                    title="Núm. Orden:"
+                                                    description="{ListOrderModel>Ebeln}"
+                                                    icon="sap-icon://pdf-reader"
+                                                    iconDensityAware="false"
+                                                    iconInset="false"
+                                                    type="Navigation"
+                                                    press="handleSelectionViewOrder"/>
+                                            </items>
+                                        </List>
+                                    </content>
+                                </IconTabFilter>
+                            </items>
+                        </IconTabBar>
+                        
+                    </l:VerticalLayout>
+                </semantic:content>
+                <semantic:positiveAction>
+                    <semantic:PositiveAction text="Aprobar" press="onPressAction(1)"/>
+                </semantic:positiveAction>
+                <semantic:negativeAction>
+                    <semantic:NegativeAction text="Rechazar" press="onPressAction(0)"/>
+                </semantic:negativeAction>
+			</semantic:DetailPage>
+
+		</detailPages>
+    </SplitContainer>
+
+</mvc:View>

@@ -1,0 +1,16 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:c="sap.ui.core"
+    >
+	<Dialog contentWidth="400px"   title="Aprobar" >
+		<content>
+          <label text="Hola" />
+		</content>	
+		<buttons>
+            <Button text="{i18n>Aceptar}" icon="sap-icon://accept" type="Default"   press="_onGetPinPadAdmin"/>
+			<Button text="{i18n>Cerrar}" icon="sap-icon://sys-cancel-2" type="Default"   press="_onButtonPress"/>
+			
+		</buttons>
+	</Dialog>
+</c:FragmentDefinition>
