@@ -8,9 +8,8 @@
 	xmlns:form="sap.ui.layout.form" 
 	xmlns:layout="sap.ui.layout"
 	xmlns:personal="gm.zorderpurchase.controller.blocks"
-	xmlns:employment="gm.zorderpurchase.controller.blocks"
-	xmlns:completetext="gm.zorderpurchase.controller.blocks"
 	xmlns:paymetcond="gm.zorderpurchase.controller.blocks"
+	xmlns:employment="gm.zorderpurchase.controller.blocks"
 	 xmlns="sap.uxap">
      <ObjectPageLayout
         showTitleInHeaderContent="true"
@@ -72,16 +71,6 @@
 					<ObjectPageSubSection titleUppercase="false">
 						<blocks>
 							<personal:PersonalFormBlock id="generallinfo" columnLayout="3"/>
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-
-			<ObjectPageSection titleUppercase="false" title="Texto Completo">
-				<subSections>
-					<ObjectPageSubSection title="Texto Completo" titleUppercase="false">
-						<blocks>
-							<completetext:BlockCompleteText id="completeText" columnLayout="3"/>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>

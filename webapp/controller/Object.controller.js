@@ -71,9 +71,17 @@ sap.ui.define([
             var oViewModel = this.getModel("objectView");
             oViewModel.setProperty("/busy", false);
             var dataDetail = sap.ui.getCore().getModel("OderDetail").getData();
+            var dataSelectedOrder = sap.ui.getCore().getModel("selectedOrder").getData();
+            var dataHeaderDetail = sap.ui.getCore().getModel("selectedOrderHeader").getData();
+            
             this.byId("pageTitle").setText(i18n.getText("expandTitle", [dataDetail.ebeln, dataDetail.txz01]))
             this.byId("snappedTitle").setText(i18n.getText("expandTitle", [dataDetail.ebeln, dataDetail.txz01]))
             oViewModel.setData(dataDetail);
+            var orderModel = new sap.ui.model.json.JSONModel(dataSelectedOrder);
+            var headerOrderModel = new sap.ui.model.json.JSONModel(dataHeaderDetail);
+            this.setModel(orderModel,"orderModel")
+            this.setModel(headerOrderModel,"headerOrderModel")
+            
         }
 
     });

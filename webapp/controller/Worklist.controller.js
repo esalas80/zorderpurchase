@@ -223,11 +223,15 @@ sap.ui.define([
             var modelo = this.getGenericModel();
             var entidad = "/ZMM_CDS_OC('"+object.ebeln+"')/to_position";
             var detailData = await this.getEntityV2(modelo,entidad,"");
+            var dataHeader = await this.getEntityV2(modelo, "/ZMM_CDS_OC('"+object.ebeln+"')","");
+            var auxModelHeader = new sap.ui.model.json.JSONModel(dataHeader);
             var auxModel = new sap.ui.model.json.JSONModel(detailData.results);
             var orderModel = new sap.ui.model.json.JSONModel(object);
             this.getView().setModel(auxModel,"ListdetailModel");
+            this.getView().setModel(auxModelHeader,"HeaderdetailModel");
             this.getView().setModel(orderModel,"orderModel");
             sap.ui.getCore().setModel(orderModel,"selectedOrder");
+            sap.ui.getCore().setModel(auxModelHeader,"selectedOrderHeader");
             sap.ui.core.BusyIndicator.hide();
             
         },

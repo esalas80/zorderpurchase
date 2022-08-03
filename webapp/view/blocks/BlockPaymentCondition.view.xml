@@ -3,8 +3,30 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
+	xmlns:forms="sap.ui.layout.form"
 	displayBlock="true"
 	height="100%"
 	busyIndicatorDelay="0"
 >
+	<VBox>
+		<forms:SimpleForm id="SimpleFormShipAddress"
+			editable="false"
+			layout="ResponsiveGridLayout"
+			title="Condición de pago"
+			labelSpanL="3"
+			labelSpanM="3"
+			emptySpanL="4"
+			emptySpanM="4"
+			columnsL="2"
+			columnsM="2" >
+			<forms:content>
+				<Label text="{i18n>condPay}" />
+				<Text text="{headerOrderModel>/zterm}" />
+				<Label text="{i18n>DescCond}" />
+				<Text text="{headerOrderModel>/vtext}" />
+				
+			</forms:content>
+		</forms:SimpleForm>
+	</VBox>
+
 </mvc:View>

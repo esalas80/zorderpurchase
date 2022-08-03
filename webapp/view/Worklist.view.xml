@@ -90,15 +90,21 @@
                                     <!-- <ObjectAttribute active="true" text="{orderModel>/NameF}" /> -->
                                     <ObjectAttribute title="Núm. Pedido" text="{orderModel>/ebeln}" />
                                     <ObjectAttribute title="Núm. Proveedor" text="{orderModel>/lifnr}" />
-                                    <ObjectAttribute title="Facturar a" text="{orderModel>/}" />
+                                    <ObjectAttribute title="Facturar a" text="{orderModel>/bukrs} {orderModel>/butxt}" />
                                     <ObjectAttribute title="Fecha Pedido" text="{path : 'orderModel>/bedat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
-                                    <ObjectAttribute title="Fecha Entrega" text="{path : 'orderModel>/', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
-                                    
-                                    <ObjectAttribute title="Usuario SAP" text="{orderModel>/ernam}" />
+                                    <ObjectAttribute title="Fecha Entrega" text="{path : 'ListdetailModel>/0/eindt', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+                                    <ObjectAttribute title="Condición de Pago" text="{HeaderdetailModel>/zterm}  {HeaderdetailModel>/vtext}" />
+                                    <ObjectAttribute title="Incoterms" text="{HeaderdetailModel>/inco1}  {HeaderdetailModel>/Bezei}" />
+                                    <!-- <ObjectAttribute title="Lugar de entrega" text="{HeaderdetailModel>/}" /> -->
+                                    <ObjectAttribute title="Comprador" text="{HeaderdetailModel>/eknam}" />
+                                    <ObjectAttribute title="Solicitante" text="{orderModel>/afnam}" />
+                                    <!-- <ObjectAttribute title="Núm. Modificación" text="{HeaderdetailModel>/}" /> -->
+
+                                    <!-- <ObjectAttribute title="Usuario SAP" text="{orderModel>/ernam}" />
                                     <ObjectAttribute title="Tipo Documento" text="{orderModel>/bsart}" />
                                     <ObjectAttribute title="Org. Compras" text="{orderModel>/ekorg}" />
                                     <ObjectAttribute title="Gpo. Compras" text="{orderModel>/ekgrp}" />
-                                    <ObjectAttribute title="Denom. G. Compras" text="{orderModel>/eknam}" />
+                                    <ObjectAttribute title="Denom. G. Compras" text="{orderModel>/eknam}" /> -->
                                     
                                    
                                 </ObjectHeader>
@@ -131,7 +137,7 @@
                                                 <Toolbar id="lineItemsToolbar">
                                                     <Title
                                                         id="lineItemsHeader"
-                                                        text="Items"/>
+                                                        text="Elementos"/>
                                                 </Toolbar>
                                             </headerToolbar>
                                             <columns>
@@ -221,7 +227,7 @@
                                     <content >
                                         <List
                                             id="ShorDocument"
-                                            headerText="Previsualización de Orden"
+                                            headerText="Previsualización de Documento de Compra"
                                             items="{path: 'ListOrderModel>/'}"
                                             noDataText="{i18n>noDataRequest}">
                                             <items>
