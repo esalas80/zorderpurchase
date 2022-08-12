@@ -98,7 +98,7 @@
                                     <!-- <ObjectAttribute title="Lugar de entrega" text="{HeaderdetailModel>/}" /> -->
                                     <ObjectAttribute title="Comprador" text="{HeaderdetailModel>/eknam}" />
                                     <ObjectAttribute title="Solicitante" text="{orderModel>/afnam}" />
-                                    <!-- <ObjectAttribute title="Núm. Modificación" text="{HeaderdetailModel>/}" /> -->
+                                    <ObjectAttribute title="Consignar a" text="{ListdetailModel>/0/lgobe}  {ListdetailModel>/0/afnam}" />
 
                                     <!-- <ObjectAttribute title="Usuario SAP" text="{orderModel>/ernam}" />
                                     <ObjectAttribute title="Tipo Documento" text="{orderModel>/bsart}" />

@@ -59,7 +59,8 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.show();
             var oList = this.byId("list");
             var arrFilter=[];
-            var user = this.UserID ==="DEFAULT_USER" || this.UserID ==="" ? "EXT_OMAR" :  this.UserID ;
+            debugger
+            var user = this.UserID ==="DEFAULT_USER" || this.UserID ==="" ? "32301636" :  this.UserID ;
             var modelo = this.getGenericModel();
             var entidad = "/ZMM_CDS_OC"
             var detallePromise = new Promise(function(resolve,reject){
@@ -79,7 +80,6 @@ sap.ui.define([
             var auxModel = new sap.ui.model.json.JSONModel();
             detallePromise.then(function(resp){
                 sap.ui.core.BusyIndicator.hide();
-                console.log(resp.results)
                 if(resp.results.length > 0){
                     for (let index = 0; index < resp.results.length; index++) {
                         var vImporte = 0;
@@ -233,7 +233,6 @@ sap.ui.define([
             sap.ui.getCore().setModel(orderModel,"selectedOrder");
             sap.ui.getCore().setModel(auxModelHeader,"selectedOrderHeader");
             sap.ui.core.BusyIndicator.hide();
-            
         },
         handleSelectionChange: async function(oEvent){
             sap.ui.core.BusyIndicator.show();
@@ -301,6 +300,7 @@ sap.ui.define([
                 var entidad = "/PDF_PREVIEWSet(Ebeln='"+dataOrder.ebeln+"')"
                 var document = await this.getEntityV2(modelo,entidad, "") 
                 var data=[];
+                debugger
                 if(document && (document.File !== undefined && document.File !== "")){
                     data.push(document)
                 }

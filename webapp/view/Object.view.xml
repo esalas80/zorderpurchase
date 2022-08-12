@@ -8,7 +8,6 @@
 	xmlns:form="sap.ui.layout.form" 
 	xmlns:layout="sap.ui.layout"
 	xmlns:personal="gm.zorderpurchase.controller.blocks"
-	xmlns:paymetcond="gm.zorderpurchase.controller.blocks"
 	xmlns:employment="gm.zorderpurchase.controller.blocks"
 	 xmlns="sap.uxap">
      <ObjectPageLayout
@@ -71,16 +70,6 @@
 					<ObjectPageSubSection titleUppercase="false">
 						<blocks>
 							<personal:PersonalFormBlock id="generallinfo" columnLayout="3"/>
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-
-			<ObjectPageSection titleUppercase="false" title="Condiciones de Pago">
-				<subSections>
-					<ObjectPageSubSection title="Condiciones de Pago" titleUppercase="false">
-						<blocks>
-							<paymetcond:BlockPaymentCondition id="payCondition" columnLayout="3"/>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>
