@@ -100,6 +100,7 @@
         "viewPath": "gm.zorderpurchase.view",
         "controlId": "layout",
         "controlAggregation": "beginColumnPages",
+        "transition": "slide",
         "bypassed": {
           "target": [
             "notFound"
@@ -122,6 +123,15 @@
             "worklist",
             "object"
           ]
+        },
+        {
+          "pattern": "headerSet/{objectId}/Itemdetail/{itemId}",
+          "name": "itemDetail",
+          "target": [
+            "worklist",
+            "object",
+            "itemDetail"
+          ]
         }
       ],
       "targets": {
@@ -138,6 +148,12 @@
           "controlAggregation": "midColumnPages",
           "title": "{i18n>objectViewTitle}"
         },
+        "itemDetail": {
+					"viewName": "ItemDetail",
+          "viewId":"ItemDetail",
+          "viewLevel": 1,
+					"controlAggregation": "endColumnPages"
+				},
         "objectNotFound": {
           "viewName": "ObjectNotFound",
           "viewId": "objectNotFound"

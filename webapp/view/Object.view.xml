@@ -32,28 +32,29 @@
 		<semantic:headerContent>
 			<m:ObjectHeader
 				binding="{orderModel>/}"
-				title="{objectView>/to_servicio/ktext1}"
+				title="Proveedor: {orderModel>name1}"
 				titleActive="true"
 				number="{
-					parts:[{path:'objectView>/to_servicio/tbtwr'},{path:'objectView>objectView>/to_servicio/waers'}],
+					parts:[{path:'orderModel>Importe'},{path:'orderModel>Waers'}],
 					type: 'sap.ui.model.type.Currency',
 					formatOptions: {showMeasure: false}
 				}"
-				numberUnit="{objectView>/to_servicio/waers}"
-					class="sapUiResponsivePadding--header" >
+				numberUnit="{orderModel>Waers}"
+				class="sapUiResponsivePadding--header" >
 				
+				<m:ObjectAttribute title="Núm. Pedido" text="{orderModel>/ebeln}" />
+				<m:ObjectAttribute title="Núm. Proveedor" text="{orderModel>/lifnr}" />
+				<m:ObjectAttribute title="Facturar a" text="{orderModel>/bukrs} {orderModel>/butxt}" />
+				<m:ObjectAttribute title="Fecha Pedido" text="{path : 'orderModel>/bedat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+				<m:ObjectAttribute title="Fecha Entrega" text="{path : 'ListdetailModel>/0/eindt', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+				<m:ObjectAttribute title="Condición de Pago" text="{HeaderdetailModel>/zterm}  {HeaderdetailModel>/vtext}" />
+				<m:ObjectAttribute title="Incoterms" text="{HeaderdetailModel>/inco1}  {HeaderdetailModel>/Bezei}" />
+				<m:ObjectAttribute title="Comprador" text="{HeaderdetailModel>/eknam}" />
+				<m:ObjectAttribute title="Solicitante" text="{orderModel>/afnam}" />
+				<m:ObjectAttribute title="Consignar a" text="{ListdetailModel>/0/lgobe}  {ListdetailModel>/0/afnam}" />
 			</m:ObjectHeader>
-			<m:ObjectAttribute active="true" title="Usuario" text="{objectView>/Ernam}" />
-			<m:ObjectAttribute title="Usuario SAP" text="{objectView>/Uname}" />
-			<m:ObjectAttribute title="Fecha Solicitud" text="{path : 'objectView>/Erdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
-			<m:ObjectAttribute title="Tipo Documento" text="{objectView>/Bsart} - {objectView>/Batxt}" />
-			<m:ObjectAttribute title="{i18n>Plant}" text="{objectView>/Werks} - {orderModel>/NameWerks}" />
-			<m:ObjectAttribute title="{i18n>Almacen}" text="{objectView>/Lgort} - {objectView>/NameLgort}" />
-		
-			
 		</semantic:headerContent>
 		<semantic:content>
-			
 				<m:IconTabBar
 					id="iconTabBar"
 					headerBackgroundDesign="Transparent"
@@ -79,7 +80,7 @@
 										<m:Toolbar id="lineItemsToolbar">
 											<m:Title
 												id="lineItemsHeader"
-												text="Items"/>
+												text="Elementos"/>
 										</m:Toolbar>
 									</m:headerToolbar>
 									<m:columns>
@@ -99,42 +100,45 @@
 											<m:Text text="{i18n>Imp}"/>
 										</m:Column>
 										<m:Column>
-											<m:Text text="{i18n>Subtot}"/>
+											<m:Text text="{i18n>SubTot}"/>
 										</m:Column>
 										<m:Column>
 											<m:Text text="{i18n>FecEnt}"/>
 										</m:Column>
+										
 									</m:columns>
 									<m:items>
 										<m:ColumnListItem  type="Navigation" >
 											<m:cells>
 												<m:ObjectAttribute
-														text="{ListdetailModel>Bnfpo}"/>
+														text="{ListdetailModel>ebelp}"/>
 												<m:ObjectIdentifier
-													text="{ListdetailModel>Matnr}"/>  
+													text="{ListdetailModel>matnr}"/>  
 												<m:ObjectIdentifier
-													text="{ListdetailModel>Txz01}"/>   
+													text="{ListdetailModel>txz01}"/>   
 												<m:ObjectNumber
 													number="{
-														path: 'ListdetailModel>Menge'
+														path: 'ListdetailModel>menge'
 													}"
-													unit="{ListdetailModel>Meins}"/>
+													unit="{ListdetailModel>meins}"/>
 												<m:ObjectNumber
 													number="{
-														path: 'ListdetailModel>Rlwrt',
-														formatter: '.formatter.currencyValue'
+														parts:[{path:'ListdetailModel>netwr'},{path:'ListdetailModel>waers'}],
+														type: 'sap.ui.model.type.Currency',
+														formatOptions: {showMeasure: false}
 													}"
-													unit="{ListdetailModel>Waers}"/>
+													unit="{ListdetailModel>waers}"/>    
 												<m:ObjectAttribute
-													text="$ {path:'ListdetailModel>Total', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
+													text="$ {path:'ListdetailModel>netwr', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
 												<m:ObjectIdentifier
-													text=" {path : 'ListdetailModel>Lfdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }"/>
+													text="{path : 'ListdetailModel>eindt', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }"/>
 											</m:cells>
 										</m:ColumnListItem>
 									</m:items>
 								</m:Table>
 							</m:content>
 						</m:IconTabFilter>
+
 						<m:IconTabFilter
 							id="iconTabFilterAttach"
 							icon="sap-icon://attachment"
@@ -142,22 +146,43 @@
 							key="attach">
 							<m:content >
 								<m:List
-									class="sapFDynamicPageAlignContent"
-                					mode="SingleSelectMaster"
-									selectionChange="handleSelectionAttach"
 									id="ShortAttachments"
 									headerText="Adjuntos"
 									items="{path: 'ListAttachModel>/'}"
-									noDataText="{i18n>noDataRequest}"
-									>
+									noDataText="{i18n>noDataRequest}">
 									<m:items>
-										<m:StandardListItem
-											title="{ListAttachModel>Banfn}"
+										<m:StandardListItem 	
+											title="{ListAttachModel>Ebeln}"
 											description="{ListAttachModel>ObjType}"
 											icon="{ListAttachModel>Icon}"
 											iconDensityAware="false"
 											iconInset="false"
-											type="Navigation"/>
+											type="Navigation"
+											press="handleSelectionAttach"/>
+									</m:items>
+								</m:List>
+							</m:content>
+						</m:IconTabFilter>
+						<m:IconTabFilter
+							id="iconTabFilterOrderPurchase"
+							icon="sap-icon://sales-quote"
+							tooltip="{i18n>detailIconTabBarOrder}"
+							key="order">
+							<m:content >
+								<m:List
+									id="ShorDocument"
+									headerText="Previsualización de Documento de Compra"
+									items="{path: 'ListOrderModel>/'}"
+									noDataText="{i18n>noDataRequest}">
+									<m:items>
+										<m:StandardListItem 	
+											title="Núm. Orden:"
+											description="{ListOrderModel>Ebeln}"
+											icon="sap-icon://pdf-reader"
+											iconDensityAware="false"
+											iconInset="false"
+											type="Navigation"
+											press="handleSelectionViewOrder"/>
 									</m:items>
 								</m:List>
 							</m:content>

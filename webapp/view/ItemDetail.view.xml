@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="gm.zorderpurchase.controller.Detail"
+    controllerName="gm.zorderpurchase.controller.ItemDetail"
     xmlns:m="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:t="sap.ui.table"
@@ -15,19 +15,35 @@
 		useIconTabBar="true"
 		upperCaseAnchorBar="false">
         <headerTitle>
-            	<ObjectPageDynamicHeaderTitle>
-                    <expandedHeading>
-                        <m:Title id="pageTitle" text="{i18n>expandTitle}" wrapping="true"/>
-                    </expandedHeading>
-                    <snappedHeading>
-                        <m:FlexBox fitContainer="true" alignItems="Center">
-                            <!-- <m:Avatar src="./test-resources/sap/uxap/images/imageID_275314.png" class="sapUiTinyMarginEnd"/>
-                            <m:Title text="Denise Smith" wrapping="true" /> -->
-                             <m:Title id="snappedTitle" text="{i18n>expandTitle}" wrapping="true"/>
-                        </m:FlexBox>
-                    </snappedHeading>
-                </ObjectPageDynamicHeaderTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title id="pageTitle" text="{i18n>expandTitle}" wrapping="true"/>
+                </expandedHeading>
+                <snappedHeading>
+                    <m:FlexBox fitContainer="true" alignItems="Center">
+                        <!-- <m:Avatar src="./test-resources/sap/uxap/images/imageID_275314.png" class="sapUiTinyMarginEnd"/>
+                        <m:Title text="Denise Smith" wrapping="true" /> -->
+                            <m:Title id="snappedTitle" text="{i18n>expandTitle}" wrapping="true"/>
+                    </m:FlexBox>
+                </snappedHeading>
+                 <actions>
+                    <m:OverflowToolbarButton
+						type="Transparent"
+						icon="sap-icon://full-screen"
+						press=".handleFullScreen"
+						tooltip="Enter Full Screen Mode"
+
+					    visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/endColumn/fullScreen}}"/>
+					<m:OverflowToolbarButton
+						type="Transparent"
+						icon="sap-icon://decline"
+						press=".handleClose"
+						tooltip="Close column"
+						/>
+                </actions>
+            </ObjectPageDynamicHeaderTitle>
         </headerTitle>
+       
         <headerContent>
 			
 				<layout:BlockLayout background="Mixed" visible="true">
