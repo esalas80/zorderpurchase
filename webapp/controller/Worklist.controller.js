@@ -67,7 +67,6 @@ sap.ui.define([
             this.getRouter().attachBypassed(this.onBypassed,this);
         },
         onGetInitialData: async function(){
-            debugger
             sap.ui.core.BusyIndicator.show();
             var oList = this.byId("list");
             var arrFilter=[];
@@ -103,12 +102,12 @@ sap.ui.define([
                     }
                 }
                 auxModel.setData(resp.results);
-                
+                oList.setModel(auxModel,"ListModel");    
             }).catch(function(error){
                 sap.ui.core.BusyIndicator.hide();
                 MessageBox.error(error);
             });
-            oList.setModel(auxModel,"ListModel");
+            
         },
         _onMasterMatched:function(){
             this.getModel("appView").setProperty("/layout","OneColumn")

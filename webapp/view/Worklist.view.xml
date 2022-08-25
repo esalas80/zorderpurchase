@@ -8,7 +8,7 @@
     xmlns:l="sap.ui.layout"
     xmlns:f="sap.ui.layout.form">
     
-    <semantic:MasterPage   id="page" title="Solicitudes de Pedido"  >
+    <semantic:MasterPage   id="page" title="Ordenes de Compra"  >
         <semantic:landmarkInfo>
             <PageAccessibleLandmarkInfo rootLabel="Root label" headerLabel="Header label" footerLabel="Footer label"></PageAccessibleLandmarkInfo>
         </semantic:landmarkInfo>

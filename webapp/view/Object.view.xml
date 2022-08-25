@@ -10,80 +10,180 @@
 	xmlns:personal="gm.zorderpurchase.controller.blocks"
 	xmlns:employment="gm.zorderpurchase.controller.blocks"
 	 xmlns="sap.uxap">
-     <ObjectPageLayout
-        showTitleInHeaderContent="true"
-		useIconTabBar="true"
-		upperCaseAnchorBar="false">
-        <headerTitle>
-            	<ObjectPageDynamicHeaderTitle>
-                    <expandedHeading>
-                        <m:Title id="pageTitle" text="{i18n>expandTitle}" wrapping="true"/>
-                    </expandedHeading>
-                    <snappedHeading>
-                        <m:FlexBox fitContainer="true" alignItems="Center">
-                            <!-- <m:Avatar src="./test-resources/sap/uxap/images/imageID_275314.png" class="sapUiTinyMarginEnd"/>
-                            <m:Title text="Denise Smith" wrapping="true" /> -->
-                             <m:Title id="snappedTitle" text="{i18n>expandTitle}" wrapping="true"/>
-                        </m:FlexBox>
-                    </snappedHeading>
-                </ObjectPageDynamicHeaderTitle>
-        </headerTitle>
-        <headerContent>
-			
-				<layout:BlockLayout background="Mixed" visible="true">
-					<layout:BlockLayoutRow scrollable="false">
-					
-						<layout:BlockLayoutCell  >
-							<m:ObjectHeader
-                                    binding="{orderModel>/}"
-                                    title="{objectView>/to_servicio/ktext1}"
-                                    titleActive="true"
-                                    number="{
-                                        parts:[{path:'objectView>/to_servicio/tbtwr'},{path:'objectView>objectView>/to_servicio/waers'}],
-                                        type: 'sap.ui.model.type.Currency',
-                                        formatOptions: {showMeasure: false}
-                                    }"
-                                    numberUnit="{objectView>/to_servicio/waers}"
-                                     class="sapUiResponsivePadding--header" >
-                                   
-                                </m:ObjectHeader>
-							
-							<m:FlexBox wrap="Wrap" fitContainer="true" >
-								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
-									<m:Label text="{i18n>FecEnt}" />
-									<m:VBox>
-										<m:Label text="{path : 'objectView>/eindt', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
-									</m:VBox>
-								</layout:VerticalLayout>
-								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
-									
-								</layout:VerticalLayout>
-							</m:FlexBox>
-						</layout:BlockLayoutCell> 
-					</layout:BlockLayoutRow>
-				</layout:BlockLayout>
-			
-		</headerContent>
-		<sections>
-			<ObjectPageSection titleUppercase="false" title="General">
-				<subSections>
-					<ObjectPageSubSection titleUppercase="false">
-						<blocks>
-							<personal:PersonalFormBlock id="generallinfo" columnLayout="3"/>
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
+     <semantic:SemanticPage
+	id="page"
+		busy="{detailView>/busy}"
+		busyIndicatorDelay="{detailView>/delay}"
+		headerPinnable="true"
+		toggleHeaderOnTitleClick="true"
+		preserveHeaderStateOnScroll="false"
+		titleAreaShrinkRatio="1:1.6:1.6"
+		showFooter="true">
+		<semantic:titleHeading>
+			<m:Title id="pageTitle" text="{i18n>detailTitle}" />
+		</semantic:titleHeading>
 
-			<ObjectPageSection titleUppercase="false" title="Employment">
-				<subSections>
-					<ObjectPageSubSection title="Direccion de Entrega" titleUppercase="false">
-						<blocks>
-							<employment:BlockJobInfo id="dirinfo" columnLayout="3"/>
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-		</sections>
-     </ObjectPageLayout>
+		<semantic:closeAction>
+			<semantic:CloseAction
+				id="closeColumn"
+				press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+		
+		<semantic:headerContent>
+			<m:ObjectHeader
+				binding="{orderModel>/}"
+				title="{objectView>/to_servicio/ktext1}"
+				titleActive="true"
+				number="{
+					parts:[{path:'objectView>/to_servicio/tbtwr'},{path:'objectView>objectView>/to_servicio/waers'}],
+					type: 'sap.ui.model.type.Currency',
+					formatOptions: {showMeasure: false}
+				}"
+				numberUnit="{objectView>/to_servicio/waers}"
+					class="sapUiResponsivePadding--header" >
+				
+			</m:ObjectHeader>
+			<m:ObjectAttribute active="true" title="Usuario" text="{objectView>/Ernam}" />
+			<m:ObjectAttribute title="Usuario SAP" text="{objectView>/Uname}" />
+			<m:ObjectAttribute title="Fecha Solicitud" text="{path : 'objectView>/Erdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+			<m:ObjectAttribute title="Tipo Documento" text="{objectView>/Bsart} - {objectView>/Batxt}" />
+			<m:ObjectAttribute title="{i18n>Plant}" text="{objectView>/Werks} - {orderModel>/NameWerks}" />
+			<m:ObjectAttribute title="{i18n>Almacen}" text="{objectView>/Lgort} - {objectView>/NameLgort}" />
+		
+			
+		</semantic:headerContent>
+		<semantic:content>
+			
+				<m:IconTabBar
+					id="iconTabBar"
+					headerBackgroundDesign="Transparent"
+					select=".onTabSelect"
+					selectedKey="{detailView>/selectedTab}">
+					<m:items>
+						<m:IconTabFilter
+							id="iconTabFilterShipping"
+							icon="sap-icon://message-information"
+							tooltip="{i18n>detailIconTabBarInfo}"
+							key="Items">
+							<m:content>
+								<m:Table
+									id="lineItemsList"
+									class="sapUiSmallMarginTop"
+									width="auto"
+									mode="SingleSelectMaster"
+									selectionChange="handleSelectionChange"
+									items="{path: 'ListdetailModel>/'}"
+									noDataText="{i18n>noDataRequest}"
+									busyIndicatorDelay="{detailView>/lineItemTableDelay}">
+									<m:headerToolbar>
+										<m:Toolbar id="lineItemsToolbar">
+											<m:Title
+												id="lineItemsHeader"
+												text="Items"/>
+										</m:Toolbar>
+									</m:headerToolbar>
+									<m:columns>
+										<m:Column>
+											<m:Text text="{i18n>Pos}"/>
+										</m:Column>
+										<m:Column >
+											<m:Text text="{i18n>NoMat}"/>
+										</m:Column>
+										<m:Column>
+											<m:Text text="{i18n>DescMat}"/>
+										</m:Column>
+										<m:Column>
+											<m:Text text="{i18n>Quantity}"/>
+										</m:Column>
+										<m:Column>
+											<m:Text text="{i18n>Imp}"/>
+										</m:Column>
+										<m:Column>
+											<m:Text text="{i18n>Subtot}"/>
+										</m:Column>
+										<m:Column>
+											<m:Text text="{i18n>FecEnt}"/>
+										</m:Column>
+									</m:columns>
+									<m:items>
+										<m:ColumnListItem  type="Navigation" >
+											<m:cells>
+												<m:ObjectAttribute
+														text="{ListdetailModel>Bnfpo}"/>
+												<m:ObjectIdentifier
+													text="{ListdetailModel>Matnr}"/>  
+												<m:ObjectIdentifier
+													text="{ListdetailModel>Txz01}"/>   
+												<m:ObjectNumber
+													number="{
+														path: 'ListdetailModel>Menge'
+													}"
+													unit="{ListdetailModel>Meins}"/>
+												<m:ObjectNumber
+													number="{
+														path: 'ListdetailModel>Rlwrt',
+														formatter: '.formatter.currencyValue'
+													}"
+													unit="{ListdetailModel>Waers}"/>
+												<m:ObjectAttribute
+													text="$ {path:'ListdetailModel>Total', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
+												<m:ObjectIdentifier
+													text=" {path : 'ListdetailModel>Lfdat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }"/>
+											</m:cells>
+										</m:ColumnListItem>
+									</m:items>
+								</m:Table>
+							</m:content>
+						</m:IconTabFilter>
+						<m:IconTabFilter
+							id="iconTabFilterAttach"
+							icon="sap-icon://attachment"
+							tooltip="{i18n>detailIconTabBarAttachments}"
+							key="attach">
+							<m:content >
+								<m:List
+									class="sapFDynamicPageAlignContent"
+                					mode="SingleSelectMaster"
+									selectionChange="handleSelectionAttach"
+									id="ShortAttachments"
+									headerText="Adjuntos"
+									items="{path: 'ListAttachModel>/'}"
+									noDataText="{i18n>noDataRequest}"
+									>
+									<m:items>
+										<m:StandardListItem
+											title="{ListAttachModel>Banfn}"
+											description="{ListAttachModel>ObjType}"
+											icon="{ListAttachModel>Icon}"
+											iconDensityAware="false"
+											iconInset="false"
+											type="Navigation"/>
+									</m:items>
+								</m:List>
+							</m:content>
+						</m:IconTabFilter>
+					</m:items>
+				</m:IconTabBar>
+		</semantic:content>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction
+				id="enterFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
+				press="toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction
+				id="exitFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
+				press="toggleFullScreen"/>
+		</semantic:exitFullScreenAction>
+		<semantic:positiveAction>
+			<semantic:PositiveAction text="Aprobar" press="onPressAction(1)"/>
+		</semantic:positiveAction>
+		<semantic:negativeAction>
+			<semantic:NegativeAction text="Rechazar" press="onPressAction(0)"/>
+		</semantic:negativeAction>
+	</semantic:SemanticPage>
+    
+     
 </mvc:View>
