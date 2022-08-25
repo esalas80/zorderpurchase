@@ -95,11 +95,11 @@
     },
     "routing": {
       "config": {
-        "routerClass": "sap.m.routing.Router",
+        "routerClass": "sap.f.routing.Router",
         "viewType": "XML",
         "viewPath": "gm.zorderpurchase.view",
-        "controlId": "app",
-        "controlAggregation": "pages",
+        "controlId": "layout",
+        "controlAggregation": "beginColumnPages",
         "bypassed": {
           "target": [
             "notFound"
@@ -116,9 +116,10 @@
           ]
         },
         {
-          "pattern": "headerSet/{objectId}",
+          "pattern": "headerSet/{objectId}/:?query:",
           "name": "object",
           "target": [
+            "worklist",
             "object"
           ]
         }
@@ -133,7 +134,8 @@
         "object": {
           "viewName": "Object",
           "viewId": "object",
-          "viewLevel": 2,
+          "viewLevel": 1,
+          "controlAggregation": "midColumnPages",
           "title": "{i18n>objectViewTitle}"
         },
         "objectNotFound": {

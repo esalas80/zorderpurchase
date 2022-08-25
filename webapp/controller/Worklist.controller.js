@@ -1,22 +1,17 @@
 sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
+    "sap/ui/core/Core",
     "../model/formatter",
     "sap/m/MessageBox",
     "sap/ui/core/Fragment",
     "sap/ui/model/Filter",
     "sap/ui/model/Sorter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/core/Core",
     "sap/m/Dialog",
     'sap/m/MessageToast',
-    'sap/m/DialogType',
-    "sap/m/Label",
-	"sap/m/Input",
-    "sap/m/Button",
-    "sap/m/ButtonType",
-    "./DialogApprob"
-], function (BaseController, JSONModel, formatter, MessageBox, Fragment, Filter, sorter, FilterOperator, Core, Dialog, MessageToast, DialogType, Label, Input, Button, ButtonType, DialogApprob) {
+    "sap/ui/Device"
+], function (BaseController, JSONModel, Core, formatter, MessageBox, Fragment, Filter, sorter, FilterOperator, Dialog, MessageToast, Device) {
     "use strict";
 
     return BaseController.extend("gm.zorderpurchase.controller.Worklist", {
@@ -33,7 +28,9 @@ sap.ui.define([
          */
         onInit : function () {
             var oViewModel;
-
+            var eList = this.byId("list"),
+                t=this._createViewModel(),
+                i=eList.getBusyIndicatorDelay();
             // keeps the search state
             this._aTableSearchState = [];
             var oList = this.byId("list");
@@ -53,14 +50,28 @@ sap.ui.define([
             };
             var userData = new sap.ushell.services.UserInfo();
             this.UserID=userData.getUser().getId();
-            this.onGetInitialData();
+            var oDeviceModel = new JSONModel(Device);
+			oDeviceModel.setDefaultBindingMode("OneWay");
+			this.getView().setModel(oDeviceModel, "device");
+            this.setModel(t,"masterView");
+            eList.attachEventOnce("updateFinished",function(){
+                t.setProperty("/delay",i)
+            });
+            this.getView().addEventDelegate({
+                onBeforeFirstShow:function(){
+                    this.getOwnerComponent().oListSelector.setBoundMasterList(eList)
+                }.bind(this)
+            });
+            this.getRouter().getRoute("worklist").attachPatternMatched(this._onObjectMatched, this);
+            this.getRouter().getRoute("worklist").attachPatternMatched(this._onMasterMatched,this);
+            this.getRouter().attachBypassed(this.onBypassed,this);
         },
         onGetInitialData: async function(){
+            debugger
             sap.ui.core.BusyIndicator.show();
             var oList = this.byId("list");
             var arrFilter=[];
-            debugger
-            var user = this.UserID ==="DEFAULT_USER" || this.UserID ==="" ? "32301636" :  this.UserID ;
+            var user = this.UserID ==="DEFAULT_USER" || this.UserID ==="" ? "EXT_OMAR" :  this.UserID ;
             var modelo = this.getGenericModel();
             var entidad = "/ZMM_CDS_OC"
             var detallePromise = new Promise(function(resolve,reject){
@@ -76,9 +87,8 @@ sap.ui.define([
 					}
 				});
 			});
-            
             var auxModel = new sap.ui.model.json.JSONModel();
-            detallePromise.then(function(resp){
+            await detallePromise.then(function(resp){
                 sap.ui.core.BusyIndicator.hide();
                 if(resp.results.length > 0){
                     for (let index = 0; index < resp.results.length; index++) {
@@ -93,11 +103,18 @@ sap.ui.define([
                     }
                 }
                 auxModel.setData(resp.results);
+                
             }).catch(function(error){
                 sap.ui.core.BusyIndicator.hide();
                 MessageBox.error(error);
             });
             oList.setModel(auxModel,"ListModel");
+        },
+        _onMasterMatched:function(){
+            this.getModel("appView").setProperty("/layout","OneColumn")
+        },
+        _onObjectMatched: function () {
+            this.onGetInitialData(); 
         },
         /* =========================================================== */
         /* event handlers                                              */
@@ -215,11 +232,10 @@ sap.ui.define([
         },
         onSelectionChange:async  function (oEvent) {
             sap.ui.core.BusyIndicator.show()
-            var tab = this.getView().byId("iconTabBar").getSelectedKey()
-            if(tab==="attach") this.getView().byId("iconTabBar").setSelectedKey("Items");
-            if(tab==="order") this.getView().byId("iconTabBar").setSelectedKey("Items");
-            var object =oEvent.getSource().getSelectedItem().getBindingContext("ListModel").getObject();    
-            var nroOrden = object.Banfn;
+            var t=oEvent.getSource(),
+                i=oEvent.getParameter("selected");
+            var object =oEvent.getSource().getSelectedItem().getBindingContext("ListModel").getObject();
+            var nroOrden = object.ebeln;
             var modelo = this.getGenericModel();
             var entidad = "/ZMM_CDS_OC('"+object.ebeln+"')/to_position";
             var detailData = await this.getEntityV2(modelo,entidad,"");
@@ -232,6 +248,9 @@ sap.ui.define([
             this.getView().setModel(orderModel,"orderModel");
             sap.ui.getCore().setModel(orderModel,"selectedOrder");
             sap.ui.getCore().setModel(auxModelHeader,"selectedOrderHeader");
+            if(!(t.getMode()==="MultiSelect"&&!i)){
+                this._showDetail(nroOrden)
+            }
             sap.ui.core.BusyIndicator.hide();
         },
         handleSelectionChange: async function(oEvent){
@@ -261,6 +280,26 @@ sap.ui.define([
             });
             this._showObject(dataRow);
         },
+
+        _createViewModel:function(){
+            return new JSONModel({
+                isFilterBarVisible:false,
+                filterBarLabel:"",
+                delay:0,
+                titleCount:0,
+                noDataText:this.getResourceBundle().getText("masterListNoDataText")
+            })
+        },
+
+        _showDetail:function(e){
+            var t=!Device.system.phone;
+            this.getModel("appView").setProperty("/layout","TwoColumnsMidExpanded");
+            this.getRouter().navTo("object",{objectId:e},t)
+        },
+
+
+
+
         onTabSelect: async function(oEvent){
             var itemselected =this.byId("list").getSelectedItems();
             if(itemselected.length === 0){

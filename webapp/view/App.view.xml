@@ -1,14 +1,23 @@
 <mvc:View
     controllerName="gm.zorderpurchase.controller.App"
+    height="100%"
     displayBlock="true"
     xmlns="sap.m"
+    xmlns:f="sap.f"
     xmlns:mvc="sap.ui.core.mvc">
 
     <Shell>
         <App
             id="app"
             busy="{appView>/busy}"
-            busyIndicatorDelay="{appView>/delay}"/>
+            busyIndicatorDelay="{appView>/delay}">
+            <f:FlexibleColumnLayout
+                id="layout"
+                layout="{appView>/layout}"
+                backgroundDesign="Translucent">
+            </f:FlexibleColumnLayout>
+        </App>
+
     </Shell>
 
 </mvc:View>

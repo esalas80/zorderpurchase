@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/UIComponent",
     "sap/ui/Device",
     "./model/models",
-    "./controller/ErrorHandler"
-], function (UIComponent, Device, models, ErrorHandler) {
+    "./controller/ErrorHandler",
+    "./controller/ListSelector"
+], function (UIComponent, Device, models, ErrorHandler, ListSelector) {
     "use strict";
 
     return UIComponent.extend("gm.zorderpurchase.Component", {
@@ -19,6 +20,7 @@ sap.ui.define([
          * @override
          */
         init : function () {
+            this.oListSelector=new ListSelector;
             // call the base component's init function
             UIComponent.prototype.init.apply(this, arguments);
 
@@ -39,6 +41,7 @@ sap.ui.define([
          * @override
          */
         destroy : function () {
+            this.oListSelector.destroy();
             this._oErrorHandler.destroy();
             // call the base component's destroy function
             UIComponent.prototype.destroy.apply(this, arguments);
