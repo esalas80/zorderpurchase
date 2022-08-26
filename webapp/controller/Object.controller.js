@@ -274,10 +274,19 @@ sap.ui.define([
         },
         handleSelectionViewOrder:function(oEvent){
             sap.ui.core.BusyIndicator.show();
+            
+            var userAgentString = navigator.userAgent
+            var navSafari = userAgentString.indexOf("Safari") > -1;
+            var isChrome = userAgentString.indexOf("Chrome") > -1;
+            navSafari = !(navSafari && isChrome);
             var dataRow = oEvent.getSource().getBindingContext("ListOrderModel").getObject();
             var dtValue = new Date();
             var fileName = "Orden_" + dataRow.Ebeln;
-            this.onViewerPDF(dataRow.File,fileName)
+            if( navSafari ){
+                this.downloadFile(dataRow.File,fileName, "PDF")
+            }else{
+                this.onViewerPDF(dataRow.File,fileName)
+            }           
             sap.ui.core.BusyIndicator.hide();
         },
         onViewerPDF: function(pdf, namePdf) {
