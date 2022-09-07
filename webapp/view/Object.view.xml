@@ -152,7 +152,7 @@
 									noDataText="{i18n>noDataRequest}">
 									<m:items>
 										<m:StandardListItem 	
-											title="{ListAttachModel>Ebeln}"
+											title="{ListAttachModel>Name}"
 											description="{ListAttachModel>ObjType}"
 											icon="{ListAttachModel>Icon}"
 											iconDensityAware="false"
@@ -177,7 +177,7 @@
 									<m:items>
 										<m:StandardListItem 	
 											title="Núm. Orden:"
-											description="{ListOrderModel>Ebeln}"
+											description="Formato_OC_{ListOrderModel>Ebeln}"
 											icon="sap-icon://pdf-reader"
 											iconDensityAware="false"
 											iconInset="false"
