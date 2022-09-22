@@ -363,7 +363,7 @@ sap.ui.define([
                 MessageToast.show("Seleccione  una solicitud de pedido");
                 return;
             }
-            var title=option=== 1? "Aprovar Solicitud": "Rechazar Solicitud"
+            var title=option=== 1? "Aprobar Solicitud": "Rechazar Solicitud"
             if(this.oSubmitDialog){
                 this.oSubmitDialog.destroy(); 
                 this.oSubmitDialog = undefined; 

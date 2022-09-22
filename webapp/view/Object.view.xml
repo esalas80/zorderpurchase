@@ -73,7 +73,7 @@
 									width="auto"
 									mode="SingleSelectMaster"
 									selectionChange="handleSelectionChange"
-									items="{path: 'ListdetailModel>/'}"
+									items="{path: 'ListdetailModel>/', sorter: { path: 'ebelp'}}"
 									noDataText="{i18n>noDataRequest}"
 									busyIndicatorDelay="{detailView>/lineItemTableDelay}">
 									<m:headerToolbar>
@@ -123,11 +123,11 @@
 													unit="{ListdetailModel>meins}"/>
 												<m:ObjectNumber
 													number="{
-														parts:[{path:'ListdetailModel>netwr'},{path:'ListdetailModel>waers'}],
+														parts:[{path:'ListdetailModel>netpr'}],
 														type: 'sap.ui.model.type.Currency',
-														formatOptions: {showMeasure: false}
+														formatOptions: {showMeasure: true}
 													}"
-													unit="{ListdetailModel>waers}"/>    
+													/>    
 												<m:ObjectAttribute
 													text="$ {path:'ListdetailModel>netwr', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
 												<m:ObjectIdentifier

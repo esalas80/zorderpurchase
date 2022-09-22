@@ -55,7 +55,7 @@
                                     title="{objectView>/to_servicio/ktext1}"
                                     titleActive="true"
                                     number="{
-                                        parts:[{path:'objectView>/to_servicio/tbtwr'},{path:'objectView>objectView>/to_servicio/waers'}],
+                                        parts:[{path:'objectView>/netwr'},{path:'objectView>objectView>/to_servicio/waers'}],
                                         type: 'sap.ui.model.type.Currency',
                                         formatOptions: {showMeasure: false}
                                     }"
