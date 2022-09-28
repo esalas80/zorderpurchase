@@ -43,6 +43,7 @@ sap.ui.define([
             var itemList = sap.ui.getCore().getModel("OderDetail").getData();
             var dataSelectedOrder = sap.ui.getCore().getModel("selectedOrder").getData();
             var dataHeaderDetail = sap.ui.getCore().getModel("selectedOrderHeader").getData();
+            itemList.Waers = dataSelectedOrder.Waers;
             oViewModel.setData(itemList);
             this.byId("pageTitle").setText(i18n.getText("expandTitle", [itemList.ebeln, itemList.txz01]))
             this.byId("snappedTitle").setText(i18n.getText("expandTitle", [itemList.ebeln, itemList.txz01]))

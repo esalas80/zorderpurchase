@@ -37,7 +37,7 @@
 
 					<forms:FormElement label="{i18n>DescMat}">
 						<forms:fields>
-							<Text text="{objectView>/txz01}"/>
+							<Text text="{= ${objectView>/pstyp} ==='9'? ${objectView>/ktext1}: ${objectView>/txz01}} "/>
 						</forms:fields>
 					</forms:FormElement>
 
@@ -102,7 +102,7 @@
 
 					<forms:FormElement label="{i18n>Moneda}">
 						<forms:fields>
-							<Text text="{objectView>/to_servicio/waers}"/>
+							<Text text="{objectView>/Waers}"/>
 						</forms:fields>
 					</forms:FormElement>
 

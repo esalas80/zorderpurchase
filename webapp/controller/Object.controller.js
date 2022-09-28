@@ -283,7 +283,7 @@ sap.ui.define([
             navSafari = !(navSafari && isChrome);
             var dataRow = oEvent.getSource().getBindingContext("ListOrderModel").getObject();
             var dtValue = new Date();
-            var fileName = "Formato_OC_"+dataRow.Ebeln;
+            var fileName = dataRow.Ebeln;
             if( navSafari ){
                 this.downloadFile(dataRow.File,fileName, "PDF")
             }else{
@@ -292,19 +292,16 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.hide();
         },
         onViewerPDF: function(pdf, namePdf) {
-            var objbuilder;
-
-            objbuilder += ('<object width="100%" height="100%" data="data:application/pdf;base64,');
+            
+            var objbuilder = ('<object width="100%" height="100%" data="data:application/pdf;base64,');
             objbuilder += (pdf);
             objbuilder += ('" type="application/pdf" class="internal">');
             objbuilder += ('<embed src="data:application/pdf;base64,');
             objbuilder += (pdf);
             objbuilder += ('" type="application/pdf" />');
             objbuilder += ('</object>');
-
             var win = window.open("#", "_blank");
-            var title = namePdf
-
+            const title = namePdf;
             win.document.write('<html><title>' + title +
                 '</title><body style="margin-top:0px; margin-left: 0px; margin-right: 0px; margin-bottom: 0px;">');
             win.document.write(objbuilder);
@@ -389,9 +386,9 @@ sap.ui.define([
 						type: ButtonType.Emphasized,
 						text: "Enviar",
 						press: function () {
-							var sText = Core.byId("submissionNote").getValue();
+							var sText = Core.byId("submissionNote").getValue() !==""?Core.byId("submissionNote").getValue():".";
 							//MessageToast.show("Comentario es: " + sText);
-                            this.onSendDialogApprobe(option)
+                            this.onSendDialogApprobe(option, sText)
 							this.oSubmitDialog.close();
 						}.bind(this)
 					}),
@@ -405,7 +402,7 @@ sap.ui.define([
 			}
 			this.oSubmitDialog.open();
         },
-        onSendDialogApprobe: function(option){
+        onSendDialogApprobe: function(option, message){
             var that = this;
             var title = option === 1? "Solicitud Aprobada": "Solicitud Rechazada"
             sap.ui.core.BusyIndicator.show();
@@ -414,7 +411,7 @@ sap.ui.define([
             var ebln=orderdata.ebeln;
             var genericModel = this.getView().getModel("modelattach");
             var user = this.UserID ==="DEFAULT_USER" || this.UserID ==="" ? "EXT_OMAR" :  this.UserID ;
-            var entidad = "/release_poSet(WiId='"+WiId+"',Uname='"+ user +"',Ebeln='"+ ebln +"',Approved="+option+")";            
+            var entidad = "/release_poSet(WiId='"+WiId+"',Uname='"+ user +"',Ebeln='"+ ebln +"',Approved="+option+",Rmessage='"+message+"')";            
             genericModel.read(entidad, {
                 success: function(oData, response) {
                     sap.ui.core.BusyIndicator.hide();

@@ -52,14 +52,14 @@
 						<layout:BlockLayoutCell  >
 							<m:ObjectHeader
                                     binding="{orderModel>/}"
-                                    title="{objectView>/to_servicio/ktext1}"
+                                    title="{= ${objectView>/pstyp} === '9'? ${objectView>/to_servicio/ktext1} : ${objectView>/txz01} } "
                                     titleActive="true"
                                     number="{
-                                        parts:[{path:'objectView>/netwr'},{path:'objectView>objectView>/to_servicio/waers'}],
+                                        parts:[{path:'objectView>/netwr'},{path:'objectView>objectView>/Waers'}],
                                         type: 'sap.ui.model.type.Currency',
                                         formatOptions: {showMeasure: false}
                                     }"
-                                    numberUnit="{objectView>/to_servicio/waers}"
+                                    numberUnit="{objectView>/Waers}"
                                      class="sapUiResponsivePadding--header" >
                                    
                                 </m:ObjectHeader>

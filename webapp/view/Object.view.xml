@@ -47,7 +47,7 @@
 				<m:ObjectAttribute title="Facturar a" text="{orderModel>/bukrs} {orderModel>/butxt}" />
 				<m:ObjectAttribute title="Fecha Pedido" text="{path : 'orderModel>/bedat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
 				<m:ObjectAttribute title="Fecha Entrega" text="{path : 'ListdetailModel>/0/eindt', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
-				<m:ObjectAttribute title="Condición de Pago" text="{HeaderdetailModel>/zterm}  {HeaderdetailModel>/vtext}" />
+				<m:ObjectAttribute title="Condición de Pago" text="{HeaderdetailModel>/vtext}" />
 				<m:ObjectAttribute title="Incoterms" text="{HeaderdetailModel>/inco1}  {HeaderdetailModel>/Bezei}" />
 				<m:ObjectAttribute title="Comprador" text="{HeaderdetailModel>/eknam}" />
 				<m:ObjectAttribute title="Solicitante" text="{orderModel>/afnam}" />
