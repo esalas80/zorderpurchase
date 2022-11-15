@@ -70,7 +70,9 @@
 								<m:Table
 									id="lineItemsList"
 									class="sapUiSmallMarginTop"
+									alternateRowColors="true"
 									width="auto"
+									growing="true" 
 									mode="SingleSelectMaster"
 									selectionChange="handleSelectionChange"
 									items="{path: 'ListdetailModel>/', sorter: { path: 'ebelp'}}"
@@ -87,22 +89,22 @@
 										<m:Column>
 											<m:Text text="{i18n>Pos}"/>
 										</m:Column>
-										<m:Column >
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>NoMat}"/>
 										</m:Column>
-										<m:Column>
-											<m:Text text="{i18n>DescMat}"/>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
+											<m:Text text="{i18n>DescMat}" />
 										</m:Column>
-										<m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>Quantity}"/>
 										</m:Column>
-										<m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>Imp}"/>
 										</m:Column>
-										<m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>SubTot}"/>
 										</m:Column>
-										<m:Column>
+										<m:Column minScreenWidth="Tablet" demandPopin="true">
 											<m:Text text="{i18n>FecEnt}"/>
 										</m:Column>
 										
@@ -121,13 +123,8 @@
 														path: 'ListdetailModel>menge'
 													}"
 													unit="{ListdetailModel>meins}"/>
-												<m:ObjectNumber
-													number="{
-														parts:[{path:'ListdetailModel>netpr'}],
-														type: 'sap.ui.model.type.Currency',
-														formatOptions: {showMeasure: true}
-													}"
-													/>    
+												<m:ObjectAttribute
+													text="$ {path:'ListdetailModel>netpr', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>	
 												<m:ObjectAttribute
 													text="$ {path:'ListdetailModel>netwr', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>
 												<m:ObjectIdentifier

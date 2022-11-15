@@ -116,17 +116,29 @@ sap.ui.define([
             t.setProperty("/busy",true);
             t.setProperty("/delay",e)
         },
-        loadDetail: function(detailId){
+        loadDetail: async function(detailId){
             var that = this;
             var i18n = this.getView().getModel("i18n").getResourceBundle();
             var oViewModel = this.getModel("objectView");
             oViewModel.setProperty("/busy", false);
-            
             var dataSelectedOrder = sap.ui.getCore().getModel("selectedOrder").getData();
             var dataHeaderDetail = sap.ui.getCore().getModel("selectedOrderHeader").getData();
             var itemListDetail = sap.ui.getCore().getModel("ListdetailModel").getData();
-            // this.byId("pageTitle").setText(i18n.getText("expandTitle", [dataDetail.ebeln, dataDetail.txz01]))
-            // this.byId("snappedTitle").setText(i18n.getText("expandTitle", [dataDetail.ebeln, dataDetail.txz01]))
+            var oServiceModel = this.getView().getModel("modelattach");
+            var entidad = "/ZTERM_DESCSet(Zterm='"+dataSelectedOrder.zterm+"')"
+            var payCondPromise = new Promise(function(resolve,reject){
+				oServiceModel.read(entidad,{
+					success: function(res){
+						resolve(res);
+					},
+					error: function(err){
+						reject(err);
+					}
+				});
+			});
+            await payCondPromise.then(function(resp){
+                dataHeaderDetail.vtext=resp.Text;
+            });
             oViewModel.setData(dataSelectedOrder);
             var orderModel = new sap.ui.model.json.JSONModel(dataSelectedOrder);
             var headerOrderModel = new sap.ui.model.json.JSONModel(dataHeaderDetail);
@@ -411,7 +423,7 @@ sap.ui.define([
             var ebln=orderdata.ebeln;
             var genericModel = this.getView().getModel("modelattach");
             var user = this.UserID ==="DEFAULT_USER" || this.UserID ==="" ? "EXT_OMAR" :  this.UserID ;
-            var entidad = "/release_poSet(WiId='"+WiId+"',Uname='"+ user +"',Ebeln='"+ ebln +"',Approved="+option+",Rmessage='"+message+"')";            
+            var entidad = "/release_poSet(WiId='"+WiId+"',Uname='"+ user +"',Ebeln='"+ ebln +"',Approved="+option+",Rmessage='"+message.trim().replace(/ /g,"%20")+"')";
             genericModel.read(entidad, {
                 success: function(oData, response) {
                     sap.ui.core.BusyIndicator.hide();
