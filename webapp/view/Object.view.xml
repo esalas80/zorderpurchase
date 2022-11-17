@@ -50,8 +50,8 @@
 				<m:ObjectAttribute title="Condición de Pago" text="{HeaderdetailModel>/vtext}" />
 				<m:ObjectAttribute title="Incoterms" text="{HeaderdetailModel>/inco1}  {HeaderdetailModel>/Bezei}" />
 				<m:ObjectAttribute title="Comprador" text="{HeaderdetailModel>/eknam}" />
-				<m:ObjectAttribute title="Solicitante" text="{orderModel>/afnam}" />
-				<m:ObjectAttribute title="Consignar a" text="{ListdetailModel>/0/lgobe}  {ListdetailModel>/0/afnam}" />
+				<m:ObjectAttribute title="Solicitante" text="{ListdetailModel>/0/afnam}" />
+				<m:ObjectAttribute title="Área" text="{ListdetailModel>/0/lgobe}" />
 			</m:ObjectHeader>
 		</semantic:headerContent>
 		<semantic:content>

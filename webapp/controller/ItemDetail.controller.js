@@ -24,6 +24,7 @@ sap.ui.define([
 			this._product = oEvent.getParameter("arguments").product || this._product || "0";
 
 		},
+       /* This is a function that is called when the route is matched. */
         _onObjectMatched : function (oEvent) {
             
             var argument =  oEvent.getParameter("arguments");
@@ -35,6 +36,7 @@ sap.ui.define([
             this.loadDetail(this._sObjectId);
         },
 
+        /* Loading the data from the model and setting it to the view. */
         loadDetail:function(){
             var that = this;
             var oViewModel = this.getModel("objectView");

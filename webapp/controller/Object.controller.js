@@ -116,6 +116,7 @@ sap.ui.define([
             t.setProperty("/busy",true);
             t.setProperty("/delay",e)
         },
+       /* Reading the data from the backend and setting it to the model. */
         loadDetail: async function(detailId){
             var that = this;
             var i18n = this.getView().getModel("i18n").getResourceBundle();
@@ -124,21 +125,7 @@ sap.ui.define([
             var dataSelectedOrder = sap.ui.getCore().getModel("selectedOrder").getData();
             var dataHeaderDetail = sap.ui.getCore().getModel("selectedOrderHeader").getData();
             var itemListDetail = sap.ui.getCore().getModel("ListdetailModel").getData();
-            var oServiceModel = this.getView().getModel("modelattach");
-            var entidad = "/ZTERM_DESCSet(Zterm='"+dataSelectedOrder.zterm+"')"
-            var payCondPromise = new Promise(function(resolve,reject){
-				oServiceModel.read(entidad,{
-					success: function(res){
-						resolve(res);
-					},
-					error: function(err){
-						reject(err);
-					}
-				});
-			});
-            await payCondPromise.then(function(resp){
-                dataHeaderDetail.vtext=resp.Text;
-            });
+            
             oViewModel.setData(dataSelectedOrder);
             var orderModel = new sap.ui.model.json.JSONModel(dataSelectedOrder);
             var headerOrderModel = new sap.ui.model.json.JSONModel(dataHeaderDetail);
@@ -182,6 +169,7 @@ sap.ui.define([
             this.getRouter().navTo("worklist")
         },
 
+       /* Toggling the full screen mode. */
         toggleFullScreen:function(){
             var e=this.getModel("appView").getProperty("/actionButtonsInfo/midColumn/fullScreen");
             this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen",!e);
@@ -192,6 +180,7 @@ sap.ui.define([
                 this.getModel("appView").setProperty("/layout",this.getModel("appView").getProperty("/previousLayout"))
             }
         },
+       /* The above code is a function that is called when a tab is selected. */
         onTabSelect: async function(oEvent){
             var selectedOrder  =  this.getModel("orderModel");
             if(!selectedOrder){
@@ -303,6 +292,7 @@ sap.ui.define([
             }           
             sap.ui.core.BusyIndicator.hide();
         },
+        /* Opening a new window and writing the pdf to the new window. */
         onViewerPDF: function(pdf, namePdf) {
             
             var objbuilder = ('<object width="100%" height="100%" data="data:application/pdf;base64,');
@@ -319,6 +309,7 @@ sap.ui.define([
             win.document.write(objbuilder);
             win.document.write('</body></html>');
         },
+       /* Creating a link to the file and then clicking on it. */
         downloadFile: function (data, nombre, type) {
 			//data = Xstring del servicio que contienen el pdf
 			var element = document.createElement('a');
@@ -330,6 +321,7 @@ sap.ui.define([
 			element.click();
 			document.body.removeChild(element)
 		},
+       /* Getting the mime type of the file. */
         getMimeType: function(type){
             var objType=""
             switch (type) {
