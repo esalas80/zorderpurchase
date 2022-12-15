@@ -66,7 +66,7 @@
 							
 							<m:FlexBox wrap="Wrap" fitContainer="true" >
 								<layout:VerticalLayout class="sapUiResponsiveContentPadding">
-									<m:Label text="{i18n>FecEnt}" />
+									<m:Label text="{i18n>FecEntMat}" />
 									<m:VBox>
 										<m:Label text="{path : 'objectView>/eindt', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" design="Bold"/>
 									</m:VBox>

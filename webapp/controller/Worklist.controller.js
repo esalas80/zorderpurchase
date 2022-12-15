@@ -66,6 +66,11 @@ sap.ui.define([
             this.getRouter().getRoute("worklist").attachPatternMatched(this._onMasterMatched,this);
             this.getRouter().attachBypassed(this.onBypassed,this);
         },
+        /* The above code is reading data from a CDS view and then setting the data to a JSON model. */
+        /**
+         * @date 2022-11-28
+         * @returns {any}
+         */
         onGetInitialData: async function(){
             sap.ui.core.BusyIndicator.show();
             var oList = this.byId("list");
@@ -228,6 +233,12 @@ sap.ui.define([
            
             this._oList.getBinding("items").filter(aFilters, "Application");
         },
+       /* Getting the selected item from the list and then getting the data from the backend. */
+        /**
+         * @date 2022-11-28
+         * @param {any} oEvent
+         * @returns {any}
+         */
         onSelectionChange:async  function (oEvent) {
             sap.ui.core.BusyIndicator.show()
             var t=oEvent.getSource(),
@@ -238,6 +249,13 @@ sap.ui.define([
             var entidad = "/ZMM_CDS_OC('"+object.ebeln+"')/to_position";
             var detailData = await this.getEntityV2(modelo,entidad,"");
             var dataHeader = await this.getEntityV2(modelo, "/ZMM_CDS_OC('"+object.ebeln+"')","");
+            var arrfechas=[];
+            detailData.results.forEach(element => {
+                arrfechas.push(element.eindt) 
+            });
+            var highestDate= new Date(Math.max.apply(null,arrfechas));
+            var minimumdate = new Date(Math.min.apply(null,arrfechas));
+            object.deliveryDate=highestDate
             var auxModelHeader = new sap.ui.model.json.JSONModel(dataHeader);
             var auxModel = new sap.ui.model.json.JSONModel(detailData.results);
             var orderModel = new sap.ui.model.json.JSONModel(object);
@@ -252,6 +270,12 @@ sap.ui.define([
             }
             sap.ui.core.BusyIndicator.hide();
         },
+        /* Reading the data from the backend and setting it to the model. */
+        /**
+         * @date 2022-11-28
+         * @param {any} oEvent
+         * @returns {any}
+         */
         handleSelectionChange: async function(oEvent){
             sap.ui.core.BusyIndicator.show();
             
@@ -290,6 +314,12 @@ sap.ui.define([
             })
         },
 
+        /* A function that is called when the user clicks on a list item. */
+        /**
+         * @date 2022-11-28
+         * @param {any} e
+         * @returns {any}
+         */
         _showDetail:function(e){
             var t=!Device.system.phone;
             this.getModel("appView").setProperty("/layout","TwoColumnsMidExpanded");

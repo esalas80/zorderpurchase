@@ -46,7 +46,7 @@
 				<m:ObjectAttribute title="Núm. Proveedor" text="{orderModel>/lifnr}" />
 				<m:ObjectAttribute title="Facturar a" text="{orderModel>/bukrs} {orderModel>/butxt}" />
 				<m:ObjectAttribute title="Fecha Pedido" text="{path : 'orderModel>/bedat', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
-				<m:ObjectAttribute title="Fecha Entrega" text="{path : 'ListdetailModel>/0/eindt', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
+				<m:ObjectAttribute title="Fecha Entrega" text="{path : 'orderModel>deliveryDate', type: 'sap.ui.model.odata.type.DateTime' , formatOptions: { pattern: 'dd-MM-yyyy', UTC: true } }" />
 				<m:ObjectAttribute title="Condición de Pago" text="{HeaderdetailModel>/vtext}" />
 				<m:ObjectAttribute title="Incoterms" text="{HeaderdetailModel>/inco1}  {HeaderdetailModel>/Bezei}" />
 				<m:ObjectAttribute title="Comprador" text="{HeaderdetailModel>/eknam}" />
@@ -118,11 +118,8 @@
 													text="{ListdetailModel>matnr}"/>  
 												<m:ObjectIdentifier
 													text="{ListdetailModel>txz01}"/>   
-												<m:ObjectNumber
-													number="{
-														path: 'ListdetailModel>menge'
-													}"
-													unit="{ListdetailModel>meins}"/>
+												<m:ObjectAttribute
+													text="{ListdetailModel>meins} {path: 'ListdetailModel>menge'}"/>
 												<m:ObjectAttribute
 													text="$ {path:'ListdetailModel>netpr', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2, groupingSeparator: ',', decimalSeparator: '.' }}"/>	
 												<m:ObjectAttribute

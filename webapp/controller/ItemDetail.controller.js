@@ -57,9 +57,11 @@ sap.ui.define([
             this.setModel(headerOrderModel,"headerOrderModel")
             
         },
+        /* This is a function that is called when the route is matched. */
         onExit: function () {
 			this.getRouter().getRoute("itemDetail").detachPatternMatched(this._onPatternMatch, this);
 		},
+       /* A function that is called when the route is matched. */
         handleFullScreen: function () {
 			var e=this.getModel("appView").getProperty("/actionButtonsInfo/endColumn/fullScreen");
             this.getModel("appView").setProperty("/actionButtonsInfo/endColumn/fullScreen",!e);
@@ -71,11 +73,13 @@ sap.ui.define([
             }
 		},
 
-		handleExitFullScreen: function () {
+		/* A function that is called when the route is matched. */
+        handleExitFullScreen: function () {
 			this.getRouter().navTo("itemDetail", {objectId:this._sObjectId,itemId: this._itemId});
 		},
 
-		handleClose: function () {
+		/* A function that is called when the route is matched. */
+        handleClose: function () {
             this.getModel("appView").setProperty("/actionButtonsInfo/endColumn/fullScreen",false);
             this.getRouter().navTo("object", {objectId:this._sObjectId});
 		},

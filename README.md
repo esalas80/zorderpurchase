@@ -19,6 +19,7 @@
 ## zorderpurchase
 
 App Fiori for orders purchase
+application to approve purchase orders generated from Workflow
 
 ### Starting the generated app
 

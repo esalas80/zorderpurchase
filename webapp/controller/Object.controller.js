@@ -117,6 +117,11 @@ sap.ui.define([
             t.setProperty("/delay",e)
         },
        /* Reading the data from the backend and setting it to the model. */
+        /**
+         * @date 2022-11-28
+         * @param {any} detailId
+         * @returns {any}
+         */
         loadDetail: async function(detailId){
             var that = this;
             var i18n = this.getView().getModel("i18n").getResourceBundle();
@@ -125,15 +130,31 @@ sap.ui.define([
             var dataSelectedOrder = sap.ui.getCore().getModel("selectedOrder").getData();
             var dataHeaderDetail = sap.ui.getCore().getModel("selectedOrderHeader").getData();
             var itemListDetail = sap.ui.getCore().getModel("ListdetailModel").getData();
-            
+            var oServiceModel = this.getView().getModel("modelattach");
+            var entidad = "/ZTERM_DESCSet(Zterm='"+dataSelectedOrder.zterm+"')"
+            var payCondPromise = new Promise(function(resolve,reject){
+				oServiceModel.read(entidad,{
+					success: function(res){
+						resolve(res);
+					},
+					error: function(err){
+						reject(err);
+					}
+				});
+			});
+            await payCondPromise.then(function(resp){
+                dataHeaderDetail.vtext=resp.Text;
+            });
             oViewModel.setData(dataSelectedOrder);
             var orderModel = new sap.ui.model.json.JSONModel(dataSelectedOrder);
             var headerOrderModel = new sap.ui.model.json.JSONModel(dataHeaderDetail);
             var itemlistModel = new sap.ui.model.json.JSONModel(itemListDetail);
+             
             this.setModel(orderModel,"orderModel")
             this.setModel(headerOrderModel,"HeaderdetailModel")
             this.setModel(itemlistModel,"ListdetailModel")
         },
+       /* Reading the data from the backend and setting it to the model. */
         handleSelectionChange: async function(oEvent){
             sap.ui.core.BusyIndicator.show(); 
             var that = this;
@@ -163,6 +184,7 @@ sap.ui.define([
             
             
         },
+       /* A function that is called when the user presses the close button on the detail page. */
         onCloseDetailPress:function(){
             this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen",false);
             this.getOwnerComponent().oListSelector.clearMasterListSelection();
@@ -181,6 +203,11 @@ sap.ui.define([
             }
         },
        /* The above code is a function that is called when a tab is selected. */
+        /**
+         * @date 2022-11-28
+         * @param {any} oEvent
+         * @returns {any}
+         */
         onTabSelect: async function(oEvent){
             var selectedOrder  =  this.getModel("orderModel");
             if(!selectedOrder){
@@ -230,6 +257,12 @@ sap.ui.define([
             }
             sap.ui.core.BusyIndicator.hide()
         },
+        /* A function that returns an icon based on the file type. */
+        /**
+         * @date 2022-11-28
+         * @param {any} type
+         * @returns {any}
+         */
         getIcon:function(type){
             var icon="sap-icon://document"
             switch (type) {
@@ -266,6 +299,7 @@ sap.ui.define([
             }
             return icon;
         },
+       /* Downloading the file from the server. */
         handleSelectionAttach: function(oEvent){
             sap.ui.core.BusyIndicator.show();
             var dataRow = oEvent.getSource().getBindingContext("ListAttachModel").getObject();
@@ -275,6 +309,8 @@ sap.ui.define([
             this.downloadFile(dataRow.File, fileName, dataRow.ObjType)
             sap.ui.core.BusyIndicator.hide();
         },
+        /* Checking if the browser is Safari or not. If it is Safari, it will download the file. If it
+        is not Safari, it will open the file in a new tab. */
         handleSelectionViewOrder:function(oEvent){
             sap.ui.core.BusyIndicator.show();
             
@@ -293,6 +329,12 @@ sap.ui.define([
             sap.ui.core.BusyIndicator.hide();
         },
         /* Opening a new window and writing the pdf to the new window. */
+        /**
+         * @date 2022-11-28
+         * @param {any} pdf
+         * @param {any} namePdf
+         * @returns {any}
+         */
         onViewerPDF: function(pdf, namePdf) {
             
             var objbuilder = ('<object width="100%" height="100%" data="data:application/pdf;base64,');
@@ -310,6 +352,13 @@ sap.ui.define([
             win.document.write('</body></html>');
         },
        /* Creating a link to the file and then clicking on it. */
+        /**
+         * @date 2022-11-28
+         * @param {any} data
+         * @param {any} nombre
+         * @param {any} type
+         * @returns {any}
+         */
         downloadFile: function (data, nombre, type) {
 			//data = Xstring del servicio que contienen el pdf
 			var element = document.createElement('a');
@@ -358,6 +407,11 @@ sap.ui.define([
             }
             return objType    
         },
+        /* The above code is creating a dialog box with two buttons. */
+        /**
+         * @param  {} option
+         * @param  {"RechazarSolicitud"if(this.oSubmitDialog} ;return;}vartitle=option===1?"AprobarSolicitud"
+         */
         onPressAction: function(option){
             var ModelOrder  =  this.getModel("orderModel");
             if(!ModelOrder){
@@ -406,6 +460,20 @@ sap.ui.define([
 			}
 			this.oSubmitDialog.open();
         },
+        /* The above code is a function that is called when a user clicks on a button. The function is
+        called onSendDialogApprobe.
+        The function is called with two parameters, option and message.
+        The function is called from the controller.
+        The function is called from the view.
+        The function is called from the model.
+        The function is called from the manifest.
+        The function is called from the component.
+        The function is called from the manifest. */
+        /**
+         * @param  {} option
+         * @param  {} message
+         * @param  {"SolicitudRechazada"sap.ui.core.BusyIndicator.show(} {varthat=this;vartitle=option===1?"SolicitudAprobada"
+         */
         onSendDialogApprobe: function(option, message){
             var that = this;
             var title = option === 1? "Solicitud Aprobada": "Solicitud Rechazada"
