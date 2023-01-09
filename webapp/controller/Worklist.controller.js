@@ -240,6 +240,7 @@ sap.ui.define([
          * @returns {any}
          */
         onSelectionChange:async  function (oEvent) {
+            
             sap.ui.core.BusyIndicator.show()
             var t=oEvent.getSource(),
                 i=oEvent.getParameter("selected");
@@ -247,8 +248,18 @@ sap.ui.define([
             var nroOrden = object.ebeln;
             var modelo = this.getGenericModel();
             var entidad = "/ZMM_CDS_OC('"+object.ebeln+"')/to_position";
-            var detailData = await this.getEntityV2(modelo,entidad,"");
-            var dataHeader = await this.getEntityV2(modelo, "/ZMM_CDS_OC('"+object.ebeln+"')","");
+            var detailData; 
+            await this.getEntityV2(modelo,entidad,"").then(value=>{
+                detailData = value;
+            }).catch((e)=>{
+                sap.ui.core.BusyIndicator.hide();    
+            });
+            var dataHeader;
+            await this.getEntityV2(modelo, "/ZMM_CDS_OC('"+object.ebeln+"')","").then(value =>{
+                dataHeader = value;
+            }).catch((e)=>{
+                sap.ui.core.BusyIndicator.hide();    
+            });
             var arrfechas=[];
             detailData.results.forEach(element => {
                 arrfechas.push(element.eindt) 
@@ -267,8 +278,8 @@ sap.ui.define([
             sap.ui.getCore().setModel(auxModel,"ListdetailModel");
             if(!(t.getMode()==="MultiSelect"&&!i)){
                 this._showDetail(nroOrden)
-            }
-            sap.ui.core.BusyIndicator.hide();
+            }    
+            sap.ui.core.BusyIndicator.hide();    
         },
         /* Reading the data from the backend and setting it to the model. */
         /**

@@ -74,7 +74,7 @@ sap.ui.define([
                     success: function(data){
                         resolve(data);
                     },
-                    reject: function(err){
+                    error: function(err){
                         reject(err);
                     }
                 });

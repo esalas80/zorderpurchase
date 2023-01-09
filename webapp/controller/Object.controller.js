@@ -218,9 +218,8 @@ sap.ui.define([
             var tab = oEvent.getSource().getSelectedKey();
             sap.ui.getCore().getModel("ActiveTabModel").setProperty("/keyActive", tab);
             var dataOrder  =  this.getModel("orderModel").getData();
+            var modelo = this.getView().getModel("modelattach");
             if(tab==="attach"){
-                
-                var modelo = this.getView().getModel("modelattach");
                 var entidad = "/get_attach_POSet"
                 var arrFilter=[];
                 arrFilter.push(new sap.ui.model.Filter("Ebeln", sap.ui.model.FilterOperator.EQ, dataOrder.ebeln)); 
@@ -245,9 +244,13 @@ sap.ui.define([
                 this.getView().setModel(auxModel,"ListAttachModel");
             }
             else if(tab==="order"){
-                var modelo = this.getView().getModel("modelattach");
                 var entidad = "/PDF_PREVIEWSet(Ebeln='"+dataOrder.ebeln+"')"
-                var document = await this.getEntityV2(modelo,entidad, "") 
+                var document;
+                await this.getEntityV2(modelo,entidad, "").then(value=>{
+                    document = value;
+                }).catch((e)=>{
+                    sap.ui.core.BusyIndicator.hide();
+                }) 
                 var data=[];
                 if(document && (document.File !== undefined && document.File !== "")){
                     data.push(document)
@@ -255,7 +258,42 @@ sap.ui.define([
                 var auxOrderModel = new sap.ui.model.json.JSONModel(data); 
                 this.getView().setModel(auxOrderModel,"ListOrderModel");
             }
-            sap.ui.core.BusyIndicator.hide()
+            else if(tab==="text"){
+                var entidad = "/TextosSet"
+                var texts;
+                var arrFilter=[];
+                arrFilter.push(new sap.ui.model.Filter("Ebeln", sap.ui.model.FilterOperator.EQ, dataOrder.ebeln)); 
+                await this.getEntityV2(modelo,entidad, arrFilter).then(value=>{
+                    texts = value.results;
+                }).catch((e)=>{
+                    sap.ui.core.BusyIndicator.hide();
+                });
+                var auxOrderModel = new sap.ui.model.json.JSONModel(texts); 
+                this.getView().setModel(auxOrderModel,"ListTextModel");
+            }
+            else if(tab == "approvers"){
+                var entidad = "/release_strategySet";
+                var texts;
+                var arrFilter=[];
+                arrFilter.push(new sap.ui.model.Filter("Vbeln", sap.ui.model.FilterOperator.EQ, dataOrder.ebeln.toString())); 
+                await this.getEntityV2(modelo,entidad, arrFilter).then(value=>{
+                    texts = value.results;
+                    if (texts.length > 0) {
+                        for (let index = 0; index < texts.length; index++) {
+                            var approve = texts[index].Libero? "<strong style=\"color:green;\">Si</strong>":"<strong style=\"color:#B71542;\">No</strong>"
+                            var Relstrtx = "Denominación de estrategia: " + texts[index].Relstrtx +"<br>";
+                            var element = texts[index].Description +" <br>"+ Relstrtx + "Liberó: " + approve;
+                            texts[index].text= element;
+                        }
+                    }
+
+                }).catch((e)=>{
+                    sap.ui.core.BusyIndicator.hide();
+                });
+                var auxOrderModel = new sap.ui.model.json.JSONModel(texts); 
+                this.getView().setModel(auxOrderModel,"approversNodel");
+            }
+            sap.ui.core.BusyIndicator.hide();
         },
         /* A function that returns an icon based on the file type. */
         /**
@@ -293,6 +331,18 @@ sap.ui.define([
                 case "CSV":
                     icon = "sap-icon://excel-attachment";
                     break;
+                case "MSG":
+                    icon = "sap-icon://email";
+                    break;
+                case "EML":
+                    icon = "sap-icon://email";
+                    break;    
+                case "ZIP":
+                    icon = "sap-icon://attachment-zip-file";
+                    break;        
+                case "RAR":
+                    icon = "sap-icon://attachment-zip-file";
+                    break;      
                 default:
                     icon = "sap-icon://document";
                     break;
@@ -363,6 +413,22 @@ sap.ui.define([
 			//data = Xstring del servicio que contienen el pdf
 			var element = document.createElement('a');
             var objectType = this.getMimeType(type)
+            switch (type) {
+                case "MSG":
+                    nombre += "." + type.toLowerCase(); 
+                    break;
+                case "EML":
+                    nombre += "." + type.toLowerCase(); 
+                    break;
+                case "ZIP":
+                    nombre += "." + type.toLowerCase(); 
+                    break;
+                case "RAR":
+                    nombre += "." + type.toLowerCase(); 
+                    break;        
+                default:
+                    break;
+            };
 			element.setAttribute('href', 'data:'+ objectType +';base64,' + data);
 			element.setAttribute('download', (nombre ? nombre : "Documento"));
 			element.style.display = 'none';
@@ -401,6 +467,18 @@ sap.ui.define([
                 case "CSV":
                     objType = "text/csv";
                     break;           
+                case "MSG":
+                    objType = "application/vnd.ms-outlook";
+                    break;          
+                case "EML":
+                    objType = "application/octet-stream";
+                    break;                 
+                case "ZIP":
+                    objType = "application/zip";
+                    break;                       
+                case "RAR":
+                    objType = "application/rar";
+                    break;    
                 default:
                     objType = "application/pdf";
                     break;

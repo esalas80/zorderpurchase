@@ -181,6 +181,51 @@
 								</m:List>
 							</m:content>
 						</m:IconTabFilter>
+						<m:IconTabFilter
+							id="iconTabFilterComents"
+							icon="sap-icon://notification-2"
+							tooltip="{i18n>detailIconTabBarComents}"
+							key="text">
+							<m:content >
+								<m:List
+									headerText="Comentarios"
+									items="{path:'ListTextModel>/'}" >
+									<m:FeedListItem
+										sender="{Author}"
+										icon="sap-icon://post"
+										iconDensityAware="false"
+										info="{ListTextModel>Text}"
+										timestamp="{Date}"
+										convertLinksToAnchorTags="All"
+										actions="{path: 'Actions', templateShareable: false}">
+										<m:FeedListItemAction text="{ListTextModel>Ebeln}" icon="{Icon}" key="{Key}"  />
+									</m:FeedListItem>
+								</m:List>
+							</m:content>
+						</m:IconTabFilter>
+						<m:IconTabFilter
+							id="iconTabFilterDelivery"
+							icon="sap-icon://kpi-managing-my-area"
+							tooltip="{i18n>approvers}"
+							key="approvers">
+							<m:content >
+								<m:List
+									headerText="Liberadores"
+									items="{path:'approversNodel>/'}" >
+									<m:FeedListItem
+										sender="{approversNodel>Stext}"
+										icon="sap-icon://person-placeholder"
+										iconDensityAware="false"
+										text="{approversNodel>text}"
+										info="Grupo de liberación: {approversNodel>Frggr}"
+										timestamp="Estrategia liberación: {approversNodel>Frgsx}"
+										convertLinksToAnchorTags="All"
+										>
+										
+									</m:FeedListItem>
+								</m:List>
+							</m:content>
+						</m:IconTabFilter>
 					</m:items>
 				</m:IconTabBar>
 		</semantic:content>
